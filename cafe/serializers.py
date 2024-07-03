@@ -18,6 +18,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "vertical"
             "price",
             "get_image",
+            "sales"
         )
 
 

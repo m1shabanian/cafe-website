@@ -44,6 +44,7 @@ class Product(models.Model):
     egg = models.IntegerField()
     vertical = models.BinaryField(max_length=1)
     price = models.IntegerField()
+    sales = models.IntegerField()
 
     def __str__(self):
         return self.name
@@ -52,6 +53,9 @@ class Product(models.Model):
         if self.image:
             return 'http://127.0.0.1:8000' + self.image.url
         return ''
+
+    class Meta:
+        ordering = ('-sales',)
 
 
 class Order(models.Model):
@@ -67,6 +71,7 @@ class Order(models.Model):
 class OrdersProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    amount = models.IntegerField()
 
     def __str__(self):
         return f'Order {self.order.order_id} - Product {self.product.name}'
