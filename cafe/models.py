@@ -21,8 +21,22 @@ class Admin(models.Model):
         return self.username
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+    image = models.ImageField(null=True, blank=True)
+    slug = models.SlugField()
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return f'/{self.slug}/'
+
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', blank=True, null=True)
     sugar = models.IntegerField()
     coffee = models.IntegerField()
     flour = models.IntegerField()
@@ -33,6 +47,11 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_image(self):
+        if self.image:
+            return 'http://127.0.0.1:8000' + self.image.url
+        return ''
 
 
 class Order(models.Model):
